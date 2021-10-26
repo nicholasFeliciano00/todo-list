@@ -1,14 +1,6 @@
+const getData = () => JSON.parse(localStorage.getItem('todoList')) ?? [];
 
-const itens = [
-    {
-        'item': 'Estudar JS', 
-        'status': ''
-    },
-    {
-        'item': 'Netflix', 
-        'status': 'checked' 
-    }
-];
+const setData = (itens) => localStorage.setItem('todoList',JSON.stringify());
 
 const createItem = (itemName, status = '', index) => {
     const item = document.createElement('label');
@@ -33,7 +25,6 @@ const createItem = (itemName, status = '', index) => {
 
     const todoList = document.getElementById('todoList');
     todoList.appendChild(item);
-
 }
 
 const cleanBoard = () => {
@@ -45,6 +36,7 @@ const cleanBoard = () => {
 
 const updateBoard = () =>{
     cleanBoard();
+    const itens = getData();
     itens.forEach( (item, index) => createItem(item.item, item.status, index));
 }
 
@@ -52,10 +44,13 @@ const insertItem = (evt) => {
     const key = evt.key;
     const text = evt.target.value;
     if(key === 'Enter'){
+        const itens = getData();
         itens.push({
             'item': text, 
             'status': '' 
         });
+
+        setData(itens);
         updateBoard();
         evt.target.value = '';
     }
