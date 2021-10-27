@@ -1,6 +1,12 @@
-const getData = () => JSON.parse(localStorage.getItem('todoList')) ?? [];
+const getData = () => {
+    if(localStorage.getItem('todoList') === 'undefined'){
+         return [];
+    }else {
+        return JSON.parse(localStorage.getItem('todoList'));
+    }
+}
 
-const setData = (itens) => localStorage.setItem('todoList',JSON.stringify());
+const setData = (itens) => localStorage.setItem('todoList',JSON.stringify(itens));
 
 const createItem = (itemName, status = '', index) => {
     const item = document.createElement('label');
@@ -49,7 +55,6 @@ const insertItem = (evt) => {
             'item': text, 
             'status': '' 
         });
-
         setData(itens);
         updateBoard();
         evt.target.value = '';
@@ -57,12 +62,16 @@ const insertItem = (evt) => {
 }
 
 const removeItem = (index) => {
+    const itens = getData();
     itens.splice(index, 1);
+    setData(itens);
     updateBoard();
 }
 
 const updateItem = (index) => {
+    const itens = getData(); 
     itens[index].status = itens[index].status === '' ? 'checked' : ''; 
+    setData(itens);
     updateBoard();
 }
 
